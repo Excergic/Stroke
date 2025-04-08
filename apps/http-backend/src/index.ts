@@ -5,9 +5,19 @@ import  jwt, { decode }  from "jsonwebtoken";
 import { middleware } from "./middleware";
 import { CreateUserSchema, SigninSchema, CreateRoomSchema } from "@repo/common/types"
 import { prismaClient } from "@repo/db/client";
+import cors from "cors";
 
 const app = express();
 
+app.use(
+    cors({
+        origin : "http://localhost:3000",
+        methods: ["GET", "POST", "DELETE", "PUT", "OPRIONS"],
+        allowedHeaders: ["Content-type", "Authorization"],
+    })
+);
+
+// use to parse json data in request method
 app.use(express.json());
 
 app.post('/signup', async (req : Request, res: Response) : Promise<any> => {

@@ -10,7 +10,9 @@
   "devDependencies": {
     "@repo/common": "workspace:*",
     "@repo/common-backend": "workspace:*",
-    "@repo/typescript-config": "workspace:*"
+    "@repo/typescript-config": "workspace:*",
+    "@types/cors": "^2.8.17",
+    "cors": "^2.8.5"
   },
   "keywords": [],
   "author": "",

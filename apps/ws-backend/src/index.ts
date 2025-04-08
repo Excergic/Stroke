@@ -3,10 +3,11 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { IncomingMessage } from "http";
 import { RawData, WebSocketServer, WebSocket } from "ws";
 import { prismaClient } from "@repo/db/client";
+//import cors from "cors";
 
 const wss = new WebSocketServer({ port : 8080 });
 
-// to store userID of user who connect the websocket servedr
+// to store userID of user who connect the websocket server
 const clientUser = new Map<WebSocket, string>();
 const clientRoom = new Map<WebSocket, number>();
 
@@ -100,8 +101,7 @@ wss.on("connection", (ws: WebSocket, request: IncomingMessage) => {
         const broadcastMessage = {
           type : "chat",
           userId,
-          message : message.message,
-          createdAt : savedMessages.createdAt,
+          message : message.message
         };
 
         wss.clients.forEach(client => {

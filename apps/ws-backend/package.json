@@ -9,8 +9,10 @@
   },
   "devDependencies": {
     "@repo/common-backend": "workspace:*",
+    "@repo/db": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@repo/db" : "workspace:*"
+    "@types/cors": "^2.8.17",
+    "cors": "^2.8.5"
   },
   "keywords": [],
   "author": "",
