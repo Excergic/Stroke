@@ -1,15 +1,20 @@
+import type { Config } from 'tailwindcss'
 
-import type { Config } from 'tailwindcss';
-
-const config: Config = {
+export default {
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    "./app/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "../../packages/ui/**/*.{ts,tsx}" // Path to shared components if any
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
+    },
   },
-  plugins: [],
-};
-
-export default config;
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+} satisfies Config

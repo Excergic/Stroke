@@ -1,256 +1,137 @@
-// app/web/page.tsx
-'use client';
+"use client";
+import { Paintbrush2, Palette, Share2, Layers, Sparkles, ChevronRight } from 'lucide-react';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import axios from 'axios';
-import { CreateUserSchema, SigninSchema, CreateRoomSchema } from '@repo/common/types'; // Adjust the import path
-import { ZodError } from 'zod';
-
-export default function HomePage() {
-  const router = useRouter();
-  const [signupData, setSignupData] = useState({ username: '', email: '', password: '' });
-  const [loginData, setLoginData] = useState({ email: '', password: '' }); // Changed identifier to email
-  const [roomData, setRoomData] = useState({ slug: '' });
-  const [joinRoomId, setJoinRoomId] = useState('');
-  const [error, setError] = useState<string[]>([]);
-
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError([]);
-    try {
-      // Validate signup data
-      CreateUserSchema.parse(signupData);
-
-      const response = await axios.post('http://localhost:3001/signup', signupData);
-      alert('Signup successful! Please log in.');
-      setSignupData({ username: '', email: '', password: '' });
-    } catch (err: any) {
-      if (err instanceof ZodError) {
-        setError(err.errors.map((e) => e.message));
-      } else {
-        setError([err.response?.data?.message || 'Signup failed']);
-      }
-    }
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError([]);
-    try {
-      // Validate login data
-      SigninSchema.parse(loginData);
-
-      const response = await axios.post('http://localhost:3001/login', loginData); // Send email and password
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userId', response.data.userId);
-      alert('Login successful!');
-      setLoginData({ email: '', password: '' });
-    } catch (err: any) {
-      if (err instanceof ZodError) {
-        setError(err.errors.map((e) => e.message));
-      } else {
-        setError([err.response?.data?.message || 'Login failed']);
-      }
-    }
-  };
-
-  const handleCreateRoom = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError([]);
-    try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      if (!token || !userId) {
-        throw new Error('Please log in first');
-      }
-
-      // Validate create room data
-      CreateRoomSchema.parse(roomData);
-
-      const response = await axios.post(
-        'http://localhost:3001/create-room',
-        { slug: roomData.slug, adminID: userId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      alert(`Room created! Room ID: ${response.data.roomId}`);
-      setRoomData({ slug: '' });
-    } catch (err: any) {
-      if (err instanceof ZodError) {
-        setError(err.errors.map((e) => e.message));
-      } else {
-        setError([err.response?.data?.message || 'Failed to create room']);
-      }
-    }
-  };
-
-  const handleJoinRoom = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError([]);
-    if (!joinRoomId) {
-      setError(['Please enter a Room ID']);
-      return;
-    }
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setError(['Please log in first']);
-      return;
-    }
-
-    router.push(`/chat/${joinRoomId}`);
-  };
+export default function App() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-6">
-        <h1 className="text-3xl font-bold text-center text-gray-800">Chat App</h1>
-        {error.length > 0 && (
-          <div className="text-red-500 text-center">
-            {error.map((err, index) => (
-              <p key={index}>{err}</p>
-            ))}
+    <div className="min-h-screen bg-gradient">
+      {/* Hero Section */}
+      <div className="hero">
+        <div className="hero-bg"></div>
+        <div className="hero-content">
+          <div className="hero-blur">
+            <div className="hero-blur-inner"></div>
           </div>
-        )}
-
-        {/* Signup Form */}
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4 flex items-center gap-2">
-            Signup <span className="text-sm text-gray-500">(New User?)</span>
-          </h2>
-          <form onSubmit={handleSignup} className="space-y-4">
-            <div>
-              <input
-                type="text"
-                value={signupData.username}
-                onChange={(e) => setSignupData({ ...signupData, username: e.target.value })}
-                placeholder="Username"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            <div>
-              <input
-                type="email"
-                value={signupData.email}
-                onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
-                placeholder="Email"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                value={signupData.password}
-                onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
-                placeholder="Password"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
+          
+          <h1 className="hero-title">
+            Unleash your creativity
+            <span className="hero-highlight">
+              <span> with Canvas</span>
+            </span>
+          </h1>
+          <p className="hero-description">
+            A powerful digital canvas where imagination meets technology. Create stunning artwork, collaborate with others, and share your masterpieces with the world.
+          </p>
+          <div className="hero-buttons">
+            <a
+              href="#"
+              className="button-primary"
             >
-              Signup
-            </button>
-          </form>
-        </div>
-
-        {/* Login Form */}
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4 flex items-center gap-2">
-            Login <span className="text-sm text-gray-500">(Returning User?)</span>
-          </h2>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <input
-                type="email"
-                value={loginData.email}
-                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                placeholder="Email"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                value={loginData.password}
-                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                placeholder="Password"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
-            >
-              Login
-            </button>
-          </form>
-          {localStorage.getItem('token') && (
-            <div className="mt-4 text-center">
-              <Link href="/rooms">
-                <button className="text-blue-600 hover:underline">View Available Rooms</button>
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* Create Room Form */}
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Create Room</h2>
-          <form onSubmit={handleCreateRoom} className="space-y-4">
-            <div>
-              <input
-                type="text"
-                value={roomData.slug}
-                onChange={(e) => setRoomData({ ...roomData, slug: e.target.value })}
-                placeholder="Room Name (Slug)"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
-            >
-              Create Room
-            </button>
-          </form>
-        </div>
-
-        {/* Join Room Form */}
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Join Room</h2>
-          <form onSubmit={handleJoinRoom} className="space-y-4">
-            <div>
-              <input
-                type="number"
-                value={joinRoomId}
-                onChange={(e) => setJoinRoomId(e.target.value)}
-                placeholder="Room ID"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
-            >
-              Join Room
-            </button>
-          </form>
+              Start Drawing <ChevronRight className="ml-2 h-4 w-4" />
+            </a>
+          </div>
         </div>
       </div>
+
+      {/* Features Section */}
+      <div className="features">
+        <div className="features-container">
+          <div className="features-header">
+            <h2 className="features-title">
+              Everything you need to create amazing art
+            </h2>
+          </div>
+          <div className="features-grid">
+            <div className="feature-card">
+              <dt className="feature-title">
+                <Paintbrush2 className="h-5 w-5 feature-icon" />
+                Professional Tools
+              </dt>
+              <dd className="feature-description">
+                <p>Advanced brushes, layers, and tools designed for both beginners and professionals.</p>
+              </dd>
+            </div>
+            <div className="feature-card">
+              <dt className="feature-title">
+                <Share2 className="h-5 w-5 feature-icon" />
+                Real-time Collaboration
+              </dt>
+              <dd className="feature-description">
+                <p>Work together with other artists in real-time, share feedback, and create together.</p>
+              </dd>
+            </div>
+            <div className="feature-card">
+              <dt className="feature-title">
+                <Sparkles className="h-5 w-5 feature-icon" />
+                AI-Powered Features
+              </dt>
+              <dd className="feature-description">
+                <p>Enhanced creativity with AI-assisted tools and smart suggestions.</p>
+              </dd>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Preview Section */}
+      <div className="preview">
+        <div className="preview-container">
+          <div className="preview-content">
+            <h2 className="preview-title">Powerful features for limitless creativity</h2>
+            <p className="preview-description">
+              Experience a new way of digital art creation with our intuitive interface and powerful tools.
+            </p>
+            <div className="preview-features">
+              <div className="preview-feature">
+                <Layers className="h-7 w-5 preview-feature-icon" />
+                <div>
+                  <h3 className="preview-feature-title">Advanced Layer System</h3>
+                  <p className="preview-feature-description">Create complex artwork with our powerful layer management system.</p>
+                </div>
+              </div>
+              <div className="preview-feature">
+                <Palette className="h-7 w-5 preview-feature-icon" />
+                <div>
+                  <h3 className="preview-feature-title">Custom Brushes</h3>
+                  <p className="preview-feature-description">Create and customize your own brushes for unique artistic expressions.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="preview-image">
+            <div className="preview-image-bg">
+              <div className="preview-image-gradient"></div>
+              <div className="preview-image-radial"></div>
+            </div>
+            <div className="preview-image-content">
+              <div className="preview-image-icon">
+                <Paintbrush2 className="w-24 h-24" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-links">
+            <a href="#" className="footer-link">
+              Terms
+            </a>
+            <a href="#" className="footer-link">
+              Privacy
+            </a>
+            <a href="#" className="footer-link">
+              Contact
+            </a>
+          </div>
+          <div className="footer-copyright">
+            <p>
+              &copy; 2025 Canvas. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

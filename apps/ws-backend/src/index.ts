@@ -3,6 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { IncomingMessage } from "http";
 import { RawData, WebSocketServer, WebSocket } from "ws";
 import { prismaClient } from "@repo/db/client";
+import {URL} from 'url';
 //import cors from "cors";
 
 const wss = new WebSocketServer({ port : 8080 });

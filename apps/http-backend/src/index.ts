@@ -86,7 +86,7 @@ app.post("/login", async (req, res) : Promise<any> => {
     
         // Password matches, proceed to JWT
         const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: "1h" });
-        res.json({ token });
+        res.json({ token, userId : user.id });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Failed to login" });
