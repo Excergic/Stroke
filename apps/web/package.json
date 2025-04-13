@@ -15,6 +15,7 @@
     "@repo/ui": "workspace:*",
     "@types/jwt-decode": "^3.1.0",
     "axios": "^1.8.4",
+    "fabric": "^6.6.2",
     "framer-motion": "^12.6.3",
     "lucide-react": "^0.487.0",
     "next": "^15.2.1",

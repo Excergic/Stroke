@@ -1,9 +1,10 @@
 "use client";
 import { Paintbrush2, Palette, Share2, Layers, Sparkles, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
-import Modal from '../app/components/Modal'; // Adjust path
-import SignupForm from '../app/components/SignupForm'; // Adjust path
-import LoginForm from '../app/components/LoginForm'; // Adjust path
+import Modal from './components/Modal'; // Adjusted path
+import SignupForm from './components/SignupForm'; // Adjusted path
+import LoginForm from './components/LoginForm'; // Adjusted path
+import Link from 'next/link';
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,6 +46,9 @@ export default function App() {
               <button onClick={handleStartDrawing} className="button-primary">
                 Start Drawing <ChevronRight style={{ width: '1rem', height: '1rem', marginLeft: '0.5rem' }} />
               </button>
+              <Link href="/canvas" className="button-secondary">
+                Go to Canvas
+              </Link>
             </div>
           </div>
         </div>
